@@ -10,6 +10,8 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.text.Normalizer;
 
+import static com.mateus.ana.core.Normalize.normalize;
+
 public class WebSearchModule implements CoreModule {
 
     @Override
@@ -19,15 +21,6 @@ public class WebSearchModule implements CoreModule {
         String text = normalize(input);
 
         return text.matches(".*\\b(procure|procurar|procura|buscar|busque|pesquisar|pesquise)\\b.*");
-    }
-
-    private String normalize(String text) {
-        return Normalizer.normalize(text, Normalizer.Form.NFD)
-                .replaceAll("\\p{InCombiningDiacriticalMarks}+", "")
-                .toLowerCase()
-                .replaceAll("[^a-z ]", "")
-                .replaceAll("\\s+", " ")
-                .trim();
     }
 
     @Override
