@@ -14,4 +14,6 @@ public class Config {
     public static final boolean WAKE_WORD_ENABLED = true;
 
     public static final long LISTEN_WINDOW_MS = 5000;
+    public static final long COMMAND_TIMEOUT_MS = 1200;
+
 }
