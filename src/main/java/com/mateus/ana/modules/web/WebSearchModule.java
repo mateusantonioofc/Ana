@@ -1,0 +1,36 @@
+package com.mateus.ana.modules.web;
+
+import com.mateus.ana.modules.CoreModule;
+
+import java.awt.*;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+
+public class WebSearchModule implements CoreModule {
+
+    @Override
+    public boolean canHandle(String input) {
+        return input.toLowerCase().startsWith("pesquisar");
+    }
+
+    @Override
+    public String execute(String input) {
+        try {
+            String query = input.replace("pesquisar", "").trim();
+            String url = "https://google.com/search?q=" + URLEncoder.encode(query, StandardCharsets.UTF_8);
+
+            Desktop.getDesktop().browse(new URI(url));
+
+            return "Pesquisando por " + query;
+
+        } catch (URISyntaxException e) {
+            return "URL invalida";
+        } catch (IOException e) {
+            return "Erro ao abrir o navegador";
+
+        }
+    }
+}
