@@ -87,13 +87,13 @@ public class SpeechModule {
         for (String wakeWord : Config.WAKE_WORDS) {
             String wake = normalize(wakeWord);
 
-            if (normalized.matches(".*\\b" + wake + "\\b.*")) {
+            if (containsWakeWord(normalized, wake)) {
+
+                System.out.println("[Speech] Wake word detectada");
+
                 listenUntil = now + Config.LISTEN_WINDOW_MS;
 
-                String command = normalized
-                        .replaceAll("\\b" + wake + "\\b", "")
-                        .replaceAll("\\s+", " ")
-                        .trim();
+                String command = removeWakeWord(normalized, wake);
 
                 if (!command.isEmpty() && listener != null) {
                     listener.onFinalResult(command);
@@ -101,6 +101,17 @@ public class SpeechModule {
                 return;
             }
         }
+    }
+
+    private boolean containsWakeWord(String text, String wake) {
+        return text.matches("(^|.*\\s)"+ wake +"(\\s.*|$)");
+    }
+
+    private String removeWakeWord(String text, String wake) {
+        return text
+                .replaceFirst("(^|\\s)"+ wake +"(\\s|$)", " ")
+                .replaceAll("\\s+", " ")
+                .trim();
     }
 
     public void stop() {
